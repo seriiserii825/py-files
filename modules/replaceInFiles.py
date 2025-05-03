@@ -14,7 +14,6 @@ def replaceInFiles():
     file_extension, search_string, replace_string = getFileData()
     excluded_dirs = getExcludedDirs()
     showOccuriences(file_extension, search_string, excluded_dirs)
-    excluded_dirs = getExcludedDirs()
     attached_dirs = getAttachedDirs() 
     print(Panel(f"[red]excluded_dirs: {excluded_dirs}"))
     print(Panel(f"[blue]attached_dirs: {attached_dirs}"))
