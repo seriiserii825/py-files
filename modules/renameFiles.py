@@ -2,12 +2,16 @@ import os
 from rich import print
 from rich.console import Console
 from rich.panel import Panel
-
 from utils.getExcludedDirs import getExcludedDirs
 console = Console()
 
 def renameFiles():
-    filename = console.input("[blue]Enter the file name to rename: ")
+    # filename = console.input("[blue]Enter the file name to rename: ")
+    file_path = os.popen("fzf --height 40% --reverse --inline-info --preview 'bat --style=numbers --color=always {}'").read().strip()
+    filename = os.path.basename(file_path)
+    # filename without extension
+    filename = filename.split('.')[0]
+    print(f'filename: {filename}')
     newfilename = console.input("[blue]Enter the new file name: ")
     excluded_dirs = getExcludedDirs()
     # Create the command to find files

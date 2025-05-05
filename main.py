@@ -1,8 +1,8 @@
-from pyfzf.pyfzf import FzfPrompt
 
 from modules.findInFiles import findInFiles
 from modules.renameFiles import renameFiles
 from modules.replaceInFiles import replaceInFiles
+from pyfzf.pyfzf import FzfPrompt
 fzf = FzfPrompt()
 
 menu_items = ['Find in files', 'Replace in files', 'Rename files', 'Exit']
