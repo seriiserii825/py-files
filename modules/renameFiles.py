@@ -5,9 +5,14 @@ from rich.panel import Panel
 from utils.getExcludedDirs import getExcludedDirs
 console = Console()
 
+
 def renameFiles():
     # filename = console.input("[blue]Enter the file name to rename: ")
-    file_path = os.popen("fzf --height 40% --reverse --inline-info --preview 'bat --style=numbers --color=always {}'").read().strip()
+    fzf_cmd = (
+        "fzf --height 40% --reverse --inline-info "
+        "--preview 'bat --style=numbers --color=always {}'"
+    )
+    file_path = os.popen(fzf_cmd).read().strip()
     filename = os.path.basename(file_path)
     # filename without extension
     filename = filename.split('.')[0]
@@ -19,7 +24,8 @@ def renameFiles():
     print(Panel(f"command: {command}"))
 
     # Run the find command to list the files
-    files = os.popen(command).read()  # Using os.popen to capture the output of the find command
+    # Using os.popen to capture the output of the find command
+    files = os.popen(command).read()
     print(Panel(f"Files found: {files}"))
 
     # Ask for confirmation to run the rename command
