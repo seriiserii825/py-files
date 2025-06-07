@@ -1,5 +1,10 @@
+autopep8==2.3.2
+flake8==7.2.0
 markdown-it-py==3.0.0
+mccabe==0.7.0
 mdurl==0.1.2
+pycodestyle==2.13.0
+pyflakes==3.3.2
 pyfzf==0.3.1
 Pygments==2.19.1
 rich==14.0.0

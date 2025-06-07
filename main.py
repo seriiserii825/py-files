@@ -21,5 +21,6 @@ elif choice[0] == 'Exit':
     print("Exiting...")
     exit(0)
 
+
 def menu():
     pass
