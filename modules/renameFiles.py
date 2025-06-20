@@ -15,23 +15,24 @@ def find_file() -> str:
     )
     file_path = os.popen(fzf_cmd).read().strip()
     filename = os.path.basename(file_path)
+    print(f"filename: {filename}")
     # filename without extension
     return filename.split('.')[0]
 
 
-def renameFiles(filename: str) -> None:
-    newfilename = _get_new_file_name()
+def renameFiles(filename: str, newfilename) -> str:
     files = _find_files(filename)
     selected_files = _check_file_to_rename(files)
     _rename_files(selected_files, newfilename)
+    return newfilename
 
 
-def _get_new_file_name() -> str:
+def get_new_file_name() -> str:
     new_file_name = console.input(
         "[blue]Enter the new file name, without extension: ")
     if not new_file_name:
         print(Panel("[red]New file name cannot be empty."))
-        return _get_new_file_name()
+        exit(1)
     return new_file_name
 
 

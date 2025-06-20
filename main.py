@@ -1,6 +1,6 @@
 
 from modules.findInFiles import findInFiles
-from modules.renameFiles import find_file, renameFiles
+from modules.renameFiles import find_file, get_new_file_name, renameFiles
 from modules.replaceInFiles import replaceInFiles
 from pyfzf.pyfzf import FzfPrompt
 fzf = FzfPrompt()
@@ -21,10 +21,13 @@ elif choice[0] == 'Replace in files':
     pass
 elif choice[0] == 'Rename files':
     filename = find_file()
-    renameFiles(filename=filename)
+    newfilename = get_new_file_name()
+    renameFiles(filename=filename, newfilename=newfilename)
 elif choice[0] == 'Replace and Rename files':
     filename = find_file()
-    renameFiles(filename=filename)
+    newfilename = get_new_file_name()
+    replaceInFiles(str_to_replace=filename, replacement=newfilename)
+    newfilename = renameFiles(filename=filename, newfilename=newfilename)
 elif choice[0] == 'Exit':
     print("Exiting...")
     exit(0)

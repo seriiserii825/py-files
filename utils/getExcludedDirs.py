@@ -13,7 +13,7 @@ console = Console()
 def getExcludedDirs():
     default_exclude_dirs = list(set([
         '.git', '__pycache__', 'venv', 'node_modules',
-        'dist', 'build', '.idea', '.vscode', 'vendor'
+        'dist', 'build', '.idea', '.vscode', 'vendor', ".mypy_cache",
     ]))
 
     print(Panel(f"default_exclude_dirs: {default_exclude_dirs}"))
