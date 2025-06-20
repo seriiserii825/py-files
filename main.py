@@ -15,7 +15,9 @@ if choice:
 if choice[0] == 'Find in files':
     findInFiles()
 elif choice[0] == 'Replace in files':
-    # replaceInFiles()
+    str_to_replace = input("Enter the string to replace: ")
+    replacement = input("Enter the replacement string: ")
+    replaceInFiles(str_to_replace=str_to_replace, replacement=replacement)
     pass
 elif choice[0] == 'Rename files':
     filename = find_file()

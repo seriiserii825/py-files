@@ -11,8 +11,11 @@ console = Console()
 
 
 def getExcludedDirs():
-    default_exclude_dirs = ['.git',  './.git', '__pycache__', 'venv',
-                            'node_modules', 'dist', 'build', '.idea', '.vscode', 'vendor']
+    default_exclude_dirs = list(set([
+        '.git', '__pycache__', 'venv', 'node_modules',
+        'dist', 'build', '.idea', '.vscode', 'vendor'
+    ]))
+
     print(Panel(f"default_exclude_dirs: {default_exclude_dirs}"))
     to_exclude = console.input(
         "[blue]Do you want to exclude directories, (y/n): ")
