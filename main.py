@@ -1,11 +1,12 @@
 
 from modules.findInFiles import findInFiles
-from modules.renameFiles import renameFiles
+from modules.renameFiles import find_file, renameFiles
 from modules.replaceInFiles import replaceInFiles
 from pyfzf.pyfzf import FzfPrompt
 fzf = FzfPrompt()
 
-menu_items = ['Find in files', 'Replace in files', 'Rename files', 'Exit']
+menu_items = ['Find in files', 'Replace in files',
+              'Rename files', 'Replace and Rename files', 'Exit']
 
 choice = fzf.prompt(menu_items)
 if choice:
@@ -14,9 +15,14 @@ if choice:
 if choice[0] == 'Find in files':
     findInFiles()
 elif choice[0] == 'Replace in files':
-    replaceInFiles()
+    # replaceInFiles()
+    pass
 elif choice[0] == 'Rename files':
-    renameFiles()
+    filename = find_file()
+    renameFiles(filename=filename)
+elif choice[0] == 'Replace and Rename files':
+    filename = find_file()
+    renameFiles(filename=filename)
 elif choice[0] == 'Exit':
     print("Exiting...")
     exit(0)
