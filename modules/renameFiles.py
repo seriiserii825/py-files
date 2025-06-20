@@ -36,9 +36,15 @@ def _get_new_file_name() -> str:
 
 
 def _find_files(filename: str) -> list:
-    """Find files with the given filename."""
+    """Find files with the given filename, excluding certain directories."""
     excluded_dirs = getExcludedDirs()
-    command = f'find . -type f -name "*{filename}*" -not -path "{excluded_dirs}"'
+
+    # Build the exclusion part
+    exclude_paths = ' '.join([f'-not -path "./{d}/*"' for d in excluded_dirs])
+
+    # Final command
+    command = f'find . -type f -name "*{filename}*" {exclude_paths}'
+
     files = os.popen(command).read().strip().splitlines()
     return files if files else []
 
@@ -53,10 +59,12 @@ def _check_file_to_rename(files: list) -> list:
 
 def _rename_files(files: list, newfilename: str) -> None:
     """Rename the selected files to the new filename."""
-    new_file_extension = _get_file_with_extenstion_from_list(files, newfilename)
+    new_file_extension = _get_file_with_extenstion_from_list(
+        files, newfilename)
     was_renamed = False
     for file in files:
-        new_file_name = file.replace(os.path.basename(file), new_file_extension)
+        new_file_name = file.replace(
+            os.path.basename(file), new_file_extension)
         print(f"new_file_name: {new_file_name}")
         print(f'{file}: file')
         # new_file already exists
