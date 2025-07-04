@@ -1,9 +1,12 @@
 import os
+
 from rich import print
 from rich.console import Console
 from rich.panel import Panel
+
 from classes.Select import Select
 from utils.getExcludedDirs import getExcludedDirs
+
 console = Console()
 
 
@@ -17,7 +20,7 @@ def find_file() -> str:
     filename = os.path.basename(file_path)
     print(f"filename: {filename}")
     # filename without extension
-    return filename.split('.')[0]
+    return filename.split(".")[0]
 
 
 def renameFiles(filename: str, newfilename) -> str:
@@ -28,8 +31,7 @@ def renameFiles(filename: str, newfilename) -> str:
 
 
 def get_new_file_name() -> str:
-    new_file_name = console.input(
-        "[blue]Enter the new file name, without extension: ")
+    new_file_name = console.input("[blue]Enter the new file name, without extension: ")
     if not new_file_name:
         print(Panel("[red]New file name cannot be empty."))
         exit(1)
@@ -41,7 +43,7 @@ def _find_files(filename: str) -> list:
     excluded_dirs = getExcludedDirs()
 
     # Build the exclusion part
-    exclude_paths = ' '.join([f'-not -path "./{d}/*"' for d in excluded_dirs])
+    exclude_paths = " ".join([f'-not -path "./{d}/*"' for d in excluded_dirs])
 
     # Final command
     command = f'find . -type f -name "*{filename}*" {exclude_paths}'
@@ -60,18 +62,15 @@ def _check_file_to_rename(files: list) -> list:
 
 def _rename_files(files: list, newfilename: str) -> None:
     """Rename the selected files to the new filename."""
-    new_file_extension = _get_file_with_extenstion_from_list(
-        files, newfilename)
+    new_file_extension = _get_file_with_extenstion_from_list(files, newfilename)
     was_renamed = False
     for file in files:
-        new_file_name = file.replace(
-            os.path.basename(file), new_file_extension)
+        new_file_name = file.replace(os.path.basename(file), new_file_extension)
         print(f"new_file_name: {new_file_name}")
-        print(f'{file}: file')
+        print(f"{file}: file")
         # new_file already exists
         if os.path.exists(new_file_name):
-            print(
-                Panel(f"[red]File {new_file_name} already exists. Skipping."))
+            print(Panel(f"[red]File {new_file_name} already exists. Skipping."))
             continue
         was_renamed = True
         os.rename(file, new_file_name)
@@ -83,5 +82,5 @@ def _rename_files(files: list, newfilename: str) -> None:
 
 
 def _get_file_with_extenstion_from_list(list_of_files: list, filename: str) -> str:
-    list_extension = list_of_files[0].split('.')[-1]
+    list_extension = list_of_files[0].split(".")[-1]
     return f"{filename}.{list_extension}"

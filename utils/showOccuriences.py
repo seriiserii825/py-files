@@ -1,8 +1,11 @@
 import os
+
 from rich import print
 from rich.panel import Panel
+
+
 def showOccuriences(file_extension, search_string, excluded_dirs):
-     # Start building the command
+    # Start building the command
     command = f"grep -rnw --include='*.{file_extension}'"
 
     # Add excluded directories
@@ -14,4 +17,3 @@ def showOccuriences(file_extension, search_string, excluded_dirs):
 
     print(Panel(f"[green]command: {command}"))
     os.system(command)
-

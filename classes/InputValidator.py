@@ -1,5 +1,6 @@
 from rich import print
 
+
 class InputValidator:
     def _pretty_print(self, value):
         print("[green]============================")
