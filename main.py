@@ -7,8 +7,8 @@ from modules.replaceInFiles import replaceInFiles
 fzf = FzfPrompt()
 
 menu_items = [
-    "Find in files",
     "Replace in files",
+    "Find in files",
     "Rename files",
     "Replace and Rename files",
     "Exit",
