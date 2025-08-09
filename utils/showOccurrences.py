@@ -4,7 +4,7 @@ from rich import print
 from rich.panel import Panel
 
 
-def showOccuriences(file_extension, search_string, excluded_dirs):
+def showOccurrences(file_extension, search_string, excluded_dirs):
     # Start building the command
     command = f"grep -rnw --include='*.{file_extension}'"
 
