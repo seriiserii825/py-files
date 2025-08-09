@@ -1,8 +1,7 @@
+from simple_term_menu import TerminalMenu
+import questionary
 import subprocess
 from typing import List
-
-import questionary
-from simple_term_menu import TerminalMenu
 
 
 class Select:
@@ -33,6 +32,7 @@ class Select:
             preview_command="bat --color=always {}",
             preview_size=0.75,
         )
+        terminal_menu.show()
         # print(menu_entry_indices)
         # print(terminal_menu.chosen_menu_entries)
         return terminal_menu.chosen_menu_entries
