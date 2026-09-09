@@ -3,6 +3,7 @@ from rich.console import Console
 
 from classes.InputValidator import InputValidator
 from utils.getExcludedDirs import getExcludedDirs
+from utils.getFileExtensions import getFileExtensions
 from utils.showOccurrences import showOccurrences
 
 fzf = FzfPrompt()
@@ -10,14 +11,13 @@ console = Console()
 
 
 def findInFiles():
-    """find all files with the specified extension
-    and exclude directories with bash and grep"""
+    """find all files with the specified extensions
+    and exclude directories with bash and grep, then let the user
+    select which matching files to inspect"""
     string_to_search = InputValidator.get_string(
         "Enter the string to search for: ")
 
-    file_extension = InputValidator.get_string(
-        "Enter the file extension to search in (e.g., 'py', 'txt'): "
-    )
+    file_extensions = getFileExtensions()
 
     excluded_dirs = getExcludedDirs()
-    showOccurrences(file_extension, string_to_search, excluded_dirs)
+    showOccurrences(file_extensions, string_to_search, excluded_dirs)

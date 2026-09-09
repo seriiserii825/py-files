@@ -9,7 +9,7 @@ fzf = FzfPrompt()
 
 menu_items = [
     "Find file by filename",
-    "Replace in files by select",
+    "Replace in files by extension",
     "Replace in files from file",
     "Find in files by select",
     "Rename files by select",
@@ -21,7 +21,7 @@ choice = fzf.prompt(menu_items)
 if choice:
     print(f"You selected: {choice[0]}")
 
-if choice[0] == "Find in files":
+if choice[0] == "Find in files by select":
     findInFiles()
 elif choice[0] == "Find file":
     file_name = input("Enter the file name to find: ")
