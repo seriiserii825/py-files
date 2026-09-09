@@ -4,12 +4,12 @@ import os
 from rich import print
 
 CSV_HEADER = ["original", "to-replace"]
-REPLACE_CSV_PATH = os.path.expanduser("~/Downloads/replace.tsv")
+REPLACE_CSV_PATH = os.path.expanduser("~/Downloads/replace.csv")
 
 
 def ensureReplaceCsv(csv_path: str = REPLACE_CSV_PATH) -> bool:
     """
-    Create replace.tsv with the expected header if it doesn't exist yet.
+    Create replace.csv with the expected header if it doesn't exist yet.
     Returns True if the file was just created.
     """
     if os.path.exists(csv_path):
@@ -17,15 +17,16 @@ def ensureReplaceCsv(csv_path: str = REPLACE_CSV_PATH) -> bool:
 
     os.makedirs(os.path.dirname(csv_path), exist_ok=True)
     with open(csv_path, "w", newline="") as file:
-        csv.writer(file, delimiter="\t").writerow(CSV_HEADER)
+        csv.writer(file).writerow(CSV_HEADER)
     print(f"[yellow]{csv_path} not found — created a new empty file.")
     return True
 
 
 def getReplaceRows(csv_path: str = REPLACE_CSV_PATH) -> list:
     """
-    Read the original/to-replace pairs from replace.tsv (in ~/Downloads),
-    skipping incomplete rows.
+    Read the original/to-replace pairs from replace.csv (in ~/Downloads),
+    skipping incomplete rows. Wrap a value in double quotes if it contains
+    a comma, e.g. "var(--White, #fff)",#fff
     """
     if ensureReplaceCsv(csv_path):
         return []
@@ -39,7 +40,7 @@ def getReplaceRows(csv_path: str = REPLACE_CSV_PATH) -> list:
 
     rows = []
     with open(csv_path, "r", newline="") as file:
-        reader = csv.DictReader(file, delimiter="\t")
+        reader = csv.DictReader(file)
         for row in reader:
             original = (row.get("original") or "").strip()
             to_replace = (row.get("to-replace") or "").strip()
