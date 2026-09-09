@@ -3,15 +3,16 @@ from pyfzf.pyfzf import FzfPrompt
 from modules.findFile import findFile
 from modules.findInFiles import findInFiles
 from modules.renameFiles import find_file, get_new_file_name, renameFiles
-from modules.replaceInFiles import replaceInFiles
+from modules.replaceInFiles import replaceInFiles, replaceInFilesFromFile
 
 fzf = FzfPrompt()
 
 menu_items = [
-    "Find file",
-    "Replace in files",
-    "Find in files",
-    "Rename files",
+    "Find file by filename",
+    "Replace in files by select",
+    "Replace in files from file",
+    "Find in files by select",
+    "Rename files by select",
     "Replace and Rename files",
     "Exit",
 ]
@@ -29,6 +30,8 @@ elif choice[0] == "Replace in files":
     str_to_replace = input("Enter the string to replace: ")
     replacement = input("Enter the replacement string: ")
     replaceInFiles(str_to_replace=str_to_replace, replacement=replacement)
+elif choice[0] == "Replace in files from file":
+    replaceInFilesFromFile()
 elif choice[0] == "Rename files":
     filename = find_file()
     newfilename = get_new_file_name()

@@ -9,7 +9,17 @@ class Select:
     def select_with_fzf(options):
         input_text = "\n".join(options)
         result = subprocess.run(
-            ["fzf", "--multi"], input=input_text.encode(), stdout=subprocess.PIPE
+            [
+                "fzf",
+                "--multi",
+                "--height", "50%",
+                "--reverse",
+                "--no-mouse",
+                "--bind", "ctrl-a:select-all,ctrl-r:toggle-all",
+                "--header", "tab: toggle | ctrl-a: select all | ctrl-r: invert selection",
+            ],
+            input=input_text.encode(),
+            stdout=subprocess.PIPE,
         )
         selected = result.stdout.decode().strip().split("\n")
         return selected if selected != [""] else []

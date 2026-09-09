@@ -1,12 +1,12 @@
 import os
 
-from pyfzf.pyfzf import FzfPrompt
 from rich.console import Console
 from rich import print
 
+from classes.Select import Select
 from utils.getExcludedDirs import getExcludedDirs
+from utils.getReplaceCsv import REPLACE_CSV_PATH, getReplaceRows
 
-fzf = FzfPrompt()
 console = Console()
 
 
@@ -17,6 +17,36 @@ def replaceInFiles(str_to_replace, replacement) -> None:
         print("[red]No files selected for replacement.")
         return
     _replace_in_files(selected_files, str_to_replace, replacement)
+
+
+def replaceInFilesFromFile(csv_path: str = REPLACE_CSV_PATH) -> None:
+    rows = getReplaceRows(csv_path)
+    if not rows:
+        return
+
+    rows_with_occurences = []
+    all_files = set()
+    for str_to_replace, replacement in rows:
+        print(f"[bold]Looking for '{str_to_replace}'")
+        file_paths = _find_all_occurience(str_to_replace)
+        if file_paths:
+            rows_with_occurences.append((str_to_replace, replacement, file_paths))
+            all_files.update(file_paths)
+
+    if not all_files:
+        print("[red]No occurrences found for any row.")
+        return
+
+    selected_files = set(Select.select_with_fzf(sorted(all_files)))
+    if not selected_files:
+        print("[red]No files selected for replacement.")
+        return
+
+    for str_to_replace, replacement, file_paths in rows_with_occurences:
+        files_to_replace = [f for f in file_paths if f in selected_files]
+        if not files_to_replace:
+            continue
+        _replace_in_files(files_to_replace, str_to_replace, replacement)
 
 
 def _find_all_occurience(str_to_replace) -> list:
@@ -43,23 +73,16 @@ def _find_all_occurience(str_to_replace) -> list:
 
 
 def _choose_files(file_paths: list, str_to_replace) -> list:
-    selected_files = []
+    if not file_paths:
+        return []
 
     for file_path in file_paths:
-        # display string to replace in file with grep
         command = f"grep -n '{str_to_replace}' {file_path}"
         result = os.popen(command).read()
         if result:
             print(f"[cyan]Occurrences in {file_path}:\n{result}")
 
-            to_replace = input(
-                f"Do you want to replace '{str_to_replace}' \
-                in {file_path}? (y/n): "
-            )
-            if to_replace.lower() == "y":
-                selected_files.append(file_path)
-
-    return selected_files
+    return Select.select_with_fzf(file_paths)
 
 
 def _replace_in_files(files: list, str_to_replace: str, replacement: str) -> None:
