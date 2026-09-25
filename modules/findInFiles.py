@@ -1,7 +1,7 @@
+from py_libs.InputValidator import InputValidator
 from pyfzf.pyfzf import FzfPrompt
 from rich.console import Console
 
-from classes.InputValidator import InputValidator
 from utils.getExcludedDirs import getExcludedDirs
 from utils.getFileExtensions import getFileExtensions
 from utils.showOccurrences import showOccurrences

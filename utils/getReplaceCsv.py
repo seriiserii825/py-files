@@ -1,6 +1,6 @@
-import csv
 import os
 
+from py_libs.CsvFile import CsvFile
 from rich import print
 
 CSV_HEADER = ["original", "to-replace"]
@@ -16,8 +16,7 @@ def ensureReplaceCsv(csv_path: str = REPLACE_CSV_PATH) -> bool:
         return False
 
     os.makedirs(os.path.dirname(csv_path), exist_ok=True)
-    with open(csv_path, "w", newline="") as file:
-        csv.writer(file).writerow(CSV_HEADER)
+    CsvFile(csv_path).write_csv([], fieldnames=CSV_HEADER)
     print(f"[yellow]{csv_path} not found — created a new empty file.")
     return True
 
@@ -31,23 +30,19 @@ def getReplaceRows(csv_path: str = REPLACE_CSV_PATH) -> list:
     if ensureReplaceCsv(csv_path):
         return []
 
-    with open(csv_path, "r", newline="") as file:
-        lines = file.readlines()
-
-    if len(lines) <= 1:
+    rows = CsvFile(csv_path).read_csv() or []
+    if not rows:
         print(f"[yellow]{csv_path} is empty (only the header row).")
         return []
 
-    rows = []
-    with open(csv_path, "r", newline="") as file:
-        reader = csv.DictReader(file)
-        for row in reader:
-            original = (row.get("original") or "").strip()
-            to_replace = (row.get("to-replace") or "").strip()
-            if original and to_replace:
-                rows.append((original, to_replace))
+    result = []
+    for row in rows:
+        original = (row.get("original") or "").strip()
+        to_replace = (row.get("to-replace") or "").strip()
+        if original and to_replace:
+            result.append((original, to_replace))
 
-    if not rows:
+    if not result:
         print(f"[red]No valid rows found in {csv_path}")
 
-    return rows
+    return result

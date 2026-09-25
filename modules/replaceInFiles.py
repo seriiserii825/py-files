@@ -1,9 +1,9 @@
 import os
 
-from rich.console import Console
+from py_libs.Select import Select
 from rich import print
+from rich.console import Console
 
-from classes.Select import Select
 from utils.getExcludedDirs import getExcludedDirs
 from utils.getReplaceCsv import REPLACE_CSV_PATH, getReplaceRows
 

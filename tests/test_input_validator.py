@@ -1,6 +1,6 @@
 import builtins
 
-from classes.InputValidator import InputValidator
+from py_libs.InputValidator import InputValidator
 
 
 def _patch_inputs(monkeypatch, values):

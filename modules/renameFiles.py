@@ -1,10 +1,10 @@
 import os
 
+from py_libs.Select import Select
 from rich import print
 from rich.console import Console
 from rich.panel import Panel
 
-from classes.Select import Select
 from utils.getExcludedDirs import getExcludedDirs
 
 console = Console()

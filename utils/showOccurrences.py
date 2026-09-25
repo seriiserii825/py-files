@@ -1,9 +1,8 @@
 import os
 
+from py_libs.Select import Select
 from rich import print
 from rich.panel import Panel
-
-from classes.Select import Select
 
 
 def showOccurrences(file_extensions, search_string, excluded_dirs):
