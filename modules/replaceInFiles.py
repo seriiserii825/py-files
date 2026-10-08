@@ -1,4 +1,4 @@
-import os
+import subprocess
 
 from py_libs.Select import Select
 from rich import print
@@ -56,13 +56,14 @@ def _find_all_occurience(str_to_replace) -> list:
     """
     excluded_dirs = getExcludedDirs()
     # Generate multiple --exclude-dir flags
-    exclude_flags = " ".join([f"--exclude-dir={d}" for d in excluded_dirs])
-    command = f"grep -rl '{str_to_replace}' . {exclude_flags}"
+    exclude_flags = [f"--exclude-dir={d}" for d in excluded_dirs]
+    # -F: literal string (no regex); list args skip the shell, so quotes etc. need no escaping
+    command = ["grep", "-rlIF", *exclude_flags, "-e", str_to_replace, "."]
 
-    result = os.popen(command).read()
-    file_paths = result.strip().split("\n") if result else []
+    result = subprocess.run(command, capture_output=True, text=True).stdout
+    file_paths = result.strip().split("\n") if result.strip() else []
 
-    if not file_paths or file_paths == [""]:
+    if not file_paths:
         print(f"[red]No occurrences found for '{str_to_replace}'")
         return []
     print(f"[green]Occurrences found in {len(file_paths)} files:")
@@ -77,8 +78,8 @@ def _choose_files(file_paths: list, str_to_replace) -> list:
         return []
 
     for file_path in file_paths:
-        command = f"grep -n '{str_to_replace}' {file_path}"
-        result = os.popen(command).read()
+        command = ["grep", "-nF", "-e", str_to_replace, "--", file_path]
+        result = subprocess.run(command, capture_output=True, text=True).stdout
         if result:
             print(f"[cyan]Occurrences in {file_path}:\n{result}")
 
